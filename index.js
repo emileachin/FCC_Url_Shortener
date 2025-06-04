@@ -43,6 +43,10 @@ app.post('/api/shorturl', function(req, res) {
   const url = req.body.url
   const shortUrl = Math.floor(Math.random() * 10000)
 
+  if (!(url.startsWith('http://') || url.startsWith('https://'))) {
+    return res.json({error: 'invalid url'});
+  }
+
   const newUrl = new Url({ url, shortUrl})
   newUrl.save().then(() => {
     res.json({original_url: url, short_url: shortUrl})
